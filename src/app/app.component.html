@@ -1,0 +1,77 @@
+<app-navbar></app-navbar>
+<!--
+<agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom"> (mapClick)="onChoseLocation($event)"
+  <agm-marker [latitude]="lat" [longitude]="lng">
+  </agm-marker>
+</agm-map>
+
+-->
+  <!--<div class="col-sm-8">
+    <agm-map [zoom]="zoom" (mapClick)="addLocation($event)">
+      <agm-marker *ngFor="let marcador of _ms.marcadores" [latitude]="marcador.lat" [longitude]="marcador.lng" [title]="marcador.titulo" [markerDraggable]="marcador.draggable">
+        <agm-info-window [disableAutoPan]="true">
+          <h5>{{ marcador.titulo }}</h5>
+          <p *ngIf="marcador.desc">
+            {{ marcador.desc }}
+          </p>
+        </agm-info-window>
+      </agm-marker>
+    </agm-map>
+  </div> 
+-->
+
+<div class="container main-container">
+  <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
+  <div class="row">
+    <div class="col-sm-4">
+      <div *ngIf="!selMarcador" class="alert alert-info" role="alert">
+        <strong>Haga click</strong> en el mapa para crear un marcador o <strong>seleccione</strong> uno.  
+      </div>
+      <div *ngIf="selMarcador">
+        <h5>Marcadores</h5>
+        <hr>
+        <div class="form-group">
+          <label>Titulo</label>
+          <input type="text" name="titulo" class="form-control" [(ngModel)]="selMarcador.titulo">
+        </div>
+        <div class="form-group">
+          <label>Descripcion</label>
+          <textarea rows="5" name="desc" class="form-control" [(ngModel)]="selMarcador.desc"></textarea>
+        </div>
+        <div class="form-group">
+          <label>¿Se puede mover?</label>
+          <select [(ngModel)]="draggable" class="form-control" name="draggable" (change)="cambiarDraggable()">
+            <option value="1">
+              Si
+            </option>
+            <option value="0"> 
+              No 
+            </option>
+          </select>
+        </div>
+        <button (click)="_ms.guardarMarcadores()" type="button" class="btn btn-outline-primary btn-block">Guardar cambios</button>
+      </div>
+    </div>
+    <div class="col-sm-8">
+      <agm-map [zoom]="zoom" (mapClick)="addLocation($event)">
+        <agm-marker *ngFor="let marcador of _ms.marcadores; let i = index" 
+                    [latitude]="marcador.lat" 
+                    [longitude]="marcador.lng" 
+                    [title]="marcador.titulo" 
+                    [markerDraggable]="marcador.draggable" 
+                    (markerClick)="clickMarcador(marcador, i)" 
+                    (dragEnd)="dragEndMarcador(marcador, $event)">
+          <agm-info-window [disableAutoPan]="true">
+            <h5>{{ marcador.titulo }}</h5>
+            <p *ngIf="marcador.desc">
+              {{ marcador.desc }}
+            </p>
+            <p>
+              <a class="text-danger puntero" (click)="borrar(i)">Borrar</a>
+            </p>
+          </agm-info-window>
+        </agm-marker>
+      </agm-map>
+    </div> 
+  </div>
+</div>
